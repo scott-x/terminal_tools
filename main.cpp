@@ -1,86 +1,79 @@
 /*
 * @Author: apple
 * @Date:   2019-12-20 05:13:32
-* @Last Modified by:   apple
-* @Last Modified time: 2019-12-20 06:22:21
+* @Last Modified by:   scottxiong
+* @Last Modified time: 2019-12-21 00:51:06
 */
 #include <iostream>
-#include "task.h"
-#define TASKS_SIZE 5
+#include <cctype>
+#include <stdio.h>
 
-void show_menu(Task tasks[], int len);
-int select();
-void handleSelection(Task tasks[],int len);
+#define TASKS_SIZE 4
+
+void show_menu(const char * t[], int len);
+char select();
+void handleSelection();
 void task1();
 void task2();
 void task3();
 void task4();
-int choise;
-
-struct Task
-{
-	std::string name;
-	void (*task)();
-};
+char choise;
 
 int main(int argc, char const *argv[])
 {
-	Task t1("sleep");
-	t1.task = task1;
-	Task t2("eating");
-	t2.task = task2;
-	Task t3("swiming");
-	t3.task = task3;
-	Task t4("watching");
-	t4.task = task4;
+	//define tasks
 	const char * tasks[] = {
 		"sleep",
 		"eating",
 		"swiming",
-		"watching movie"
+		"watching"
 	};
 
 	show_menu(tasks,TASKS_SIZE);
-	int selection = select();
-    while(selection<TASKS_SIZE && selection>=0 ) {
-       handleSelection(selection);
-       show_menu(tasks,TASKS_SIZE);
-       selection = select();
-    }
-    std::cout<<"bye..."<<std::endl;
+	choise = select();
+    handleSelection();
+    // while(choise!='5') {
+    //    handleSelection();
+    //    show_menu(tasks,TASKS_SIZE);
+    //    choise = select();
+    // }
+ 
 	return 0;
 }
 
-void show_menu(Task tasks[], int len){
+void show_menu(const char * t[], int len){
 	using namespace std;
-	cout<<"*********** 菜单栏 ***********"<<endl;
+	printf("\033[01;32mPlease select your task 【1-4】:\033[0m\n");
 	for (int i = 0; i < len; i++)
 	{
-			if (i%2==1){
-		    	cout << i+1 << ". "<<tasks[i].name<<endl;
-		    }
-		    if (i%2==0){
-		    	cout << i+1 << ". "<<tasks[i].name<< "\t";
-		    	if (i==len-1){
-		    		cout << endl;
-		    	}
-		    }
+		printf("\033[01;36m  %d. %s\033[0m\n",i+1,*(t+i));
 	}	
-		
 }
 
-int select(){
+char select(){
 	using namespace std;
-	cout<<"Your selection is: ";
+	printf("\033[01;31mYour selection is: \033[0m");
 	cin>>choise;
 	return choise;
 }
 
-void handleSelection(Task tasks[],int choise){
-	if (choise>=0 && choise <TASKS_SIZE)
-	{
-		tasks[choise].(*task)();
-	}	
+void handleSelection(){
+	switch(choise){
+		case '1':
+			task1();
+			break;
+		case '2':
+			task2();
+			break;
+		case '3':
+			task3();
+			break;
+		case '4':
+			task4();
+			break;
+		default:
+			break;				
+	}
 }
 
 void task1(){
